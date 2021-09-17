@@ -19,17 +19,14 @@ namespace Lift
         public Form1()
         {
             InitializeComponent();
-            int floorCount = 4;
+            int floorCount = 5;
             int liftCount = 3;
             
             InitInterface(floorCount, liftCount);
 
             _liftsController = new LiftsController(liftCount, floorCount);
             
-            var threadParameters = new System.Threading.ThreadStart(delegate
-            {
-                HandleTicks();
-            });
+            var threadParameters = new System.Threading.ThreadStart(HandleTicks);
             var thread2 = new System.Threading.Thread(threadParameters);
             thread2.Start();
 
@@ -40,8 +37,10 @@ namespace Lift
         {
             while (true)
             {
-                Thread.Sleep(1000);
-                var cb = (Controls.Find("CurFloor1_1", true).First() as RadioButton);
+                Thread.Sleep(1500);
+                
+                
+                var cb = Controls.Find("CurFloor1_1", true).First() as RadioButton;
                 cb.Checked = !cb.Checked;
             }
             
@@ -197,16 +196,19 @@ namespace Lift
 
         private void btn_Clicked(object sender, EventArgs e)
         {
+            this.ActiveControl = null;
             var btn = (Button)sender;
 
             var btnName = btn.Name;
             
+            //button in a lift
             if (btnName.StartsWith("btnLift"))
             {
                 var nums = btnName.Substring("btnLift".Length).Split('_').Select(x => Convert.ToInt32(x)).ToList();
                 _liftsController.AddButtonLift(nums[0], nums[1]);
                 btn.BackColor = Color.Gray;
             }
+            //UP button in a floor 
             else if (btnName.StartsWith("btnFloorUp"))
             {
                 var num = Convert.ToInt32(btnName.Substring("btnFloorUp".Length));
@@ -217,6 +219,7 @@ namespace Lift
                 });
                 btn.BackColor = Color.Yellow;
             }
+            //DOWN button in a floor
             else if (btnName.StartsWith("btnFloorDown"))
             {
                 var num = Convert.ToInt32(btnName.Substring("btnFloorDown".Length));
@@ -228,7 +231,7 @@ namespace Lift
                 btn.BackColor = Color.Yellow;
             }
 
-            MessageBox.Show(btn.Name);
+            //MessageBox.Show(btn.Name);
         }
 
     }
