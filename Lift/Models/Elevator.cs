@@ -11,7 +11,7 @@ namespace Lift.Models
     public class Elevator
     {
         public DoorState DoorState { get; set; }
-        public int CurrentFlor { get; set; }
+        public int CurrentFloor { get; set; }
         public List<int> ActiveButtons { get; set; }
 
         public void OpenDoor()

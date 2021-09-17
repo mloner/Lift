@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lift.Controllers;
@@ -24,9 +25,29 @@ namespace Lift
             InitInterface(floorCount, liftCount);
 
             _liftsController = new LiftsController(liftCount, floorCount);
+            
+            var threadParameters = new System.Threading.ThreadStart(delegate
+            {
+                HandleTicks();
+            });
+            var thread2 = new System.Threading.Thread(threadParameters);
+            thread2.Start();
 
-
+            
         }
+
+        public void HandleTicks()
+        {
+            while (true)
+            {
+                Thread.Sleep(1000);
+                var cb = (Controls.Find("CurFloor1_1", true).First() as RadioButton);
+                cb.Checked = !cb.Checked;
+            }
+            
+        }
+        
+        //public void TurnOn
 
         public void InitInterface(int floorCount, int liftCount)
         {
@@ -178,17 +199,17 @@ namespace Lift
         {
             var btn = (Button)sender;
 
-            var btnText = btn.Name;
+            var btnName = btn.Name;
             
-            if (btnText.StartsWith("btnLift"))
+            if (btnName.StartsWith("btnLift"))
             {
-                var nums = btnText.Substring("btnLift".Length).Split('_').Select(x => Convert.ToInt32(x)).ToList();
+                var nums = btnName.Substring("btnLift".Length).Split('_').Select(x => Convert.ToInt32(x)).ToList();
                 _liftsController.AddButtonLift(nums[0], nums[1]);
                 btn.BackColor = Color.Gray;
             }
-            else if (btnText.StartsWith("btnFloorUp"))
+            else if (btnName.StartsWith("btnFloorUp"))
             {
-                var num = Convert.ToInt32(btnText.Substring("btnFloorUp".Length));
+                var num = Convert.ToInt32(btnName.Substring("btnFloorUp".Length));
                 _liftsController.PressedButtons.Add(new PressedButton()
                 {
                     Direction = Direction.Up,
@@ -196,9 +217,9 @@ namespace Lift
                 });
                 btn.BackColor = Color.Yellow;
             }
-            else if (btnText.StartsWith("btnFloorDown"))
+            else if (btnName.StartsWith("btnFloorDown"))
             {
-                var num = Convert.ToInt32(btnText.Substring("btnFloorDown".Length));
+                var num = Convert.ToInt32(btnName.Substring("btnFloorDown".Length));
                 _liftsController.PressedButtons.Add(new PressedButton()
                 {
                     Direction = Direction.Down,

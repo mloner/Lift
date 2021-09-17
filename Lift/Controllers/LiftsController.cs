@@ -9,7 +9,6 @@ namespace Lift.Controllers
         public int LiftCount { get; set; }
         public List<Elevator> Elevators { get; set; }
         public List<PressedButton> PressedButtons { get; set; }
-
         public LiftsController(int liftCount, int floorCount)
         {
             LiftCount = liftCount;
@@ -20,14 +19,13 @@ namespace Lift.Controllers
                 Elevators.Add(new Elevator()
                 {
                     ActiveButtons = new List<int>(),
-                    CurrentFlor = 0,
+                    CurrentFloor = 0,
                     DoorState = DoorState.Closed
                 });
             }
 
             PressedButtons = new List<PressedButton>();
         }
-
         public void AddButtonLift(int liftNum, int floorNum)
         {
             if (!Elevators[liftNum].ActiveButtons.Contains(floorNum))
@@ -35,7 +33,6 @@ namespace Lift.Controllers
                 Elevators[liftNum].ActiveButtons.Add(floorNum);
             }
         }
-        
         public void RemoveButtonLift(int liftNum, int floorNum)
         {
             if (Elevators[liftNum].ActiveButtons.Contains(floorNum))
