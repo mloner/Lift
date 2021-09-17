@@ -19,18 +19,18 @@ namespace Lift
         public Form1()
         {
             InitializeComponent();
+            
             int floorCount = 5;
             int liftCount = 3;
             
+            _liftsController = new LiftsController(liftCount, floorCount);
+            
             InitInterface(floorCount, liftCount);
 
-            _liftsController = new LiftsController(liftCount, floorCount);
             
             var threadParameters = new System.Threading.ThreadStart(HandleTicks);
             var thread2 = new System.Threading.Thread(threadParameters);
             thread2.Start();
-
-            
         }
 
         public void HandleTicks()
@@ -38,17 +38,23 @@ namespace Lift
             while (true)
             {
                 Thread.Sleep(1500);
+
+                RedrawSystemState();
                 
-                
+                _liftsController.MoveLift(0, Direction.Up);
                 var cb = Controls.Find("CurFloor1_1", true).First() as RadioButton;
                 cb.Checked = !cb.Checked;
             }
             
         }
-        
-        //public void TurnOn
 
-        public void InitInterface(int floorCount, int liftCount)
+        private void RedrawSystemState()
+        {
+            
+        }
+        
+
+        private void InitInterface(int floorCount, int liftCount)
         {
             var mainLayout = new FlowLayoutPanel()
             {
@@ -62,7 +68,7 @@ namespace Lift
             CreateLifts(mainLayout, liftCount, floorCount);
         }
 
-        public void CreateBuilding(FlowLayoutPanel layout, int floorsCount)
+        private void CreateBuilding(FlowLayoutPanel layout, int floorsCount)
         {
             var flp = new FlowLayoutPanel()
             {
@@ -119,7 +125,7 @@ namespace Lift
             }
         }
 
-        public void CreateLifts(FlowLayoutPanel layout, int liftCount, int floorsCount)
+        private void CreateLifts(FlowLayoutPanel layout, int liftCount, int floorsCount)
         {
             for (int i = 0; i < liftCount; i++)
             {
@@ -142,7 +148,7 @@ namespace Lift
             
         }
         
-        public void CreateLift(FlowLayoutPanel layout, int floorsCount, int liftNum)
+        private void CreateLift(FlowLayoutPanel layout, int floorsCount, int liftNum)
         {
             //lift buttons
             var liftLayout = new FlowLayoutPanel()

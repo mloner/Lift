@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 using Lift.Models;
 
 namespace Lift.Controllers
@@ -40,6 +42,17 @@ namespace Lift.Controllers
                 Elevators[liftNum].ActiveButtons.Remove(floorNum);
             }
         }
-        
+        public void MoveLift(int liftNum, Direction direction)
+        {
+            if (Elevators[liftNum].CurrentFloor + 1 <= FloorCount)
+            {
+                Elevators[liftNum].CurrentFloor += (direction == Direction.Up ? 1 : -1);
+            }
+            else
+            {
+                //Console.WriteLine("Floors count is less then expected");
+                MessageBox.Show("Floors count is less then expected");
+            }
+        }
     }
 }
