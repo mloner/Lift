@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lift.Controllers;
@@ -13,6 +14,7 @@ namespace Lift
 {
     public partial class Form1 : Form
     {
+        private LiftsController _liftsController;
         public Form1()
         {
             InitializeComponent();
@@ -21,11 +23,7 @@ namespace Lift
             
             InitInterface(floorCount, liftCount);
 
-            var controller = new LiftsController()
-            {
-                FloorCount = floorCount,
-                LiftCount = liftCount
-            };
+            _liftsController = new LiftsController(liftCount, floorCount);
 
 
         }
@@ -150,6 +148,7 @@ namespace Lift
                 rbFlp.Controls.Add(rb);
                 layout.Controls.Add(rbFlp);
 
+                // кнрпки внутри лифта
                 var btn = new Button()
                 {
                     Name = $"btnLift{liftNum}_{i}",
@@ -178,6 +177,35 @@ namespace Lift
         private void btn_Clicked(object sender, EventArgs e)
         {
             var btn = (Button)sender;
+
+            var btnText = btn.Name;
+            
+            if (btnText.StartsWith("btnLift"))
+            {
+                var nums = btnText.Substring("btnLift".Length).Split('_').Select(x => Convert.ToInt32(x)).ToList();
+                _liftsController.AddButtonLift(nums[0], nums[1]);
+                btn.BackColor = Color.Gray;
+            }
+            else if (btnText.StartsWith("btnFloorUp"))
+            {
+                var num = Convert.ToInt32(btnText.Substring("btnFloorUp".Length));
+                _liftsController.PressedButtons.Add(new PressedButton()
+                {
+                    Direction = Direction.Up,
+                    FloorNum = num
+                });
+                btn.BackColor = Color.Yellow;
+            }
+            else if (btnText.StartsWith("btnFloorDown"))
+            {
+                var num = Convert.ToInt32(btnText.Substring("btnFloorDown".Length));
+                _liftsController.PressedButtons.Add(new PressedButton()
+                {
+                    Direction = Direction.Down,
+                    FloorNum = num
+                });
+                btn.BackColor = Color.Yellow;
+            }
 
             MessageBox.Show(btn.Name);
         }
