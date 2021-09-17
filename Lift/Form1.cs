@@ -29,7 +29,7 @@ namespace Lift
             
             CreateBuilding(mainLayout, floorsCount);
             
-            CreateLifts(mainLayout, 3, floorsCount);
+            CreateLifts(mainLayout, 5, floorsCount);
         }
 
         public void CreateBuilding(FlowLayoutPanel layout, int floorsCount)
