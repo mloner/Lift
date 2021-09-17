@@ -16,6 +16,15 @@ namespace Lift
         {
             InitializeComponent();
 
+            var mainLayout = new FlowLayoutPanel()
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                Dock = DockStyle.Fill
+            };
+            this.Controls.Add(mainLayout);
+            
+            
+            //main 
             var flp = new FlowLayoutPanel()
             {
                 Size = new Size()
@@ -26,10 +35,7 @@ namespace Lift
                 FlowDirection = FlowDirection.BottomUp,
                 Dock = DockStyle.Bottom
             };
-            
-            this.Controls.Add(flp);
-            
-            
+            mainLayout.Controls.Add(flp);
             int floorsCount = 6;
             for (int currentFloor = 0; currentFloor < floorsCount; currentFloor++)
             {
@@ -70,6 +76,8 @@ namespace Lift
                 flp.Controls.Add(gb);
             }
         }
+        
+         
 
         private void button1_Click(object sender, EventArgs e)
         {
