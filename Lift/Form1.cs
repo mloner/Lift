@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lift.Controllers;
 
 namespace Lift
 {
@@ -15,21 +16,32 @@ namespace Lift
         public Form1()
         {
             InitializeComponent();
+            int floorCount = 4;
+            int liftCount = 3;
             
-            //main layout 
+            InitInterface(floorCount, liftCount);
+
+            var controller = new LiftsController()
+            {
+                FloorCount = floorCount,
+                LiftCount = liftCount
+            };
+
+
+        }
+
+        public void InitInterface(int floorCount, int liftCount)
+        {
             var mainLayout = new FlowLayoutPanel()
             {
                 FlowDirection = FlowDirection.LeftToRight,
                 Dock = DockStyle.Fill,
-                //BackColor = Color.Gray,
                 AutoScroll = true
             };
+            
             this.Controls.Add(mainLayout);
-            int floorsCount = 5;
-            
-            CreateBuilding(mainLayout, floorsCount);
-            
-            CreateLifts(mainLayout, 5, floorsCount);
+            CreateBuilding(mainLayout, floorCount);
+            CreateLifts(mainLayout, liftCount, floorCount);
         }
 
         public void CreateBuilding(FlowLayoutPanel layout, int floorsCount)
@@ -67,18 +79,20 @@ namespace Lift
                 {
                     var upButton = new Button();
                     upButton.Text = "Up";
-                    upButton.Name = $"btnUpFloor{currentFloor}";
+                    upButton.Name = $"btnFloorUp{currentFloor}";
                     upButton.AutoSize = true;
                     gbFp.Controls.Add(upButton);
+                    upButton.Click += new EventHandler(this.btn_Clicked);
                 }
                 //down
                 if (currentFloor != 0)
                 {
                     var downButton = new Button();
                     downButton.Text = "Down";
-                    downButton.Name = $"btnDownFloor{currentFloor}";
+                    downButton.Name = $"btnFloorDown{currentFloor}";
                     downButton.AutoSize = true;
                     gbFp.Controls.Add(downButton);
+                    downButton.Click += new EventHandler(this.btn_Clicked);
                 }
                 
                 gb.Controls.Add(gbFp);
@@ -131,13 +145,14 @@ namespace Lift
                 };
                 
                 var rb = new RadioButton();
-                rb.Name = $"rbFloor{i}Lift{liftNum}";
+                rb.Name = $"CurFloor{liftNum}_{i}";
                 rb.Enabled = false;
                 rbFlp.Controls.Add(rb);
                 layout.Controls.Add(rbFlp);
 
                 var btn = new Button()
                 {
+                    Name = $"btnLift{liftNum}_{i}",
                     Text = $"{i+1}",
                     Size = new Size()
                     {
@@ -145,6 +160,7 @@ namespace Lift
                         Width = 25
                     },
                 };
+                btn.Click += new System.EventHandler(this.btn_Clicked);
                 
                 liftLayout.Controls.Add(btn);
             }
@@ -159,9 +175,12 @@ namespace Lift
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_Clicked(object sender, EventArgs e)
         {
-            throw new System.NotImplementedException();
+            var btn = (Button)sender;
+
+            MessageBox.Show(btn.Name);
         }
+
     }
 }
