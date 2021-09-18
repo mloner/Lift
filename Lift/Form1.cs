@@ -45,7 +45,7 @@ namespace Lift
             //MessageBox.Show("sdf");
             //Thread.Sleep(1000);
             RedrawSystemState();
-            //_liftsController.MainCycle();
+            _liftsController.MainCycle();
             
             
             /*_liftsController.MoveLift(0, Direction.Up);
@@ -263,22 +263,7 @@ namespace Lift
                 var nums = btnName.Substring("btnLift".Length).Split('_').Select(x => Convert.ToInt32(x)).ToList();
                 _liftsController.AddButtonLift(nums[0], nums[1]);
                 btn.BackColor = Color.Gray;
-                if (_liftsController.Elevators[nums[0]].CurrentFloor > nums[1])
-                {
-                    _liftsController.CommandList.Add(new PressedButton()
-                    {
-                        Direction = Direction.Down,
-                        FloorNum = nums[1]
-                    });
-                }
-                else if(_liftsController.Elevators[nums[0]].CurrentFloor < nums[1])
-                {
-                    _liftsController.CommandList.Add(new PressedButton()
-                    {
-                        Direction = Direction.Up,
-                        FloorNum = nums[1]
-                    });
-                }
+                _liftsController.HandleButtonInLift(nums[0], nums[1]);
             }
             //UP button in a floor 
             else if (btnName.StartsWith("btnFloorUp"))
