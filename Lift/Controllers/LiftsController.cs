@@ -51,7 +51,7 @@ namespace Lift.Controllers
             else
             {
                 //Console.WriteLine("Floors count is less then expected");
-                MessageBox.Show("Floors count is less then expected");
+                //MessageBox.Show("Floors count is less then expected");
             }
         }
     }

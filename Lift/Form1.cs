@@ -43,7 +43,6 @@ namespace Lift
                 
                 _liftsController.MoveLift(0, Direction.Up);
                 var cb = Controls.Find("CurFloor1_1", true).First() as RadioButton;
-                cb.Checked = !cb.Checked;
             }
             
         }
@@ -51,6 +50,22 @@ namespace Lift
         private void RedrawSystemState()
         {
             
+            for (int i = 0; i < _liftsController.LiftCount; i++)
+            {
+                for (int j = 0; j < _liftsController.FloorCount; j++)
+                {
+                    var rb = Controls.Find($"CurFloor{i}_{j}", true).First() as RadioButton;
+                    rb.Checked = false;
+                }
+            }
+
+            var count = 0;
+            foreach (var lift in _liftsController.Elevators)
+            {
+                var radioButton = Controls.Find($"CurFloor{count}_{lift.CurrentFloor}", true).First() as RadioButton;
+                count++;
+                radioButton.Checked = true;
+            }
         }
         
 

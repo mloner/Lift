@@ -36,9 +36,9 @@ namespace Lift
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(729, 655);
+            this.ClientSize = new System.Drawing.Size(907, 1154);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
