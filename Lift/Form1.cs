@@ -28,31 +28,35 @@ namespace Lift
             
             InitInterface(floorCount, liftCount);
 
+            System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
+            myTimer.Interval = 1000;
+
+            myTimer.Tick += HandleTicks;
+            myTimer.Enabled = true;
             
-            var threadParameters = new System.Threading.ThreadStart(HandleTicks);
-            var thread2 = new System.Threading.Thread(threadParameters);
-            thread2.Start();
+            // var threadParameters = new System.Threading.ThreadStart(HandleTicks);
+            // var thread2 = new System.Threading.Thread(threadParameters);
+            // thread2.Start();
         }
-
-        public void HandleTicks()
+        
+        
+        private void HandleTicks(object objectInfo, EventArgs e)
         {
-            while (true)
+            //MessageBox.Show("sdf");
+            //Thread.Sleep(1000);
+            RedrawSystemState();
+            //_liftsController.MainCycle();
+            
+            
+            /*_liftsController.MoveLift(0, Direction.Up);
+            var cb = Controls.Find("CurFloor1_1", true).First() as RadioButton;
+            if(_liftsController.Elevators[2].State ==  State.Open)
+                _liftsController.Elevators[2].State = State.Stay;
+            else
             {
-                Thread.Sleep(1500);
-
-                RedrawSystemState();
-                //_liftsController.MainCycle();
-                
-                
-                /*_liftsController.MoveLift(0, Direction.Up);
-                var cb = Controls.Find("CurFloor1_1", true).First() as RadioButton;
-                if(_liftsController.Elevators[2].State ==  State.Open)
-                    _liftsController.Elevators[2].State = State.Stay;
-                else
-                {
-                    _liftsController.Elevators[2].State = State.Open;
-                }*/
-            }
+                _liftsController.Elevators[2].State = State.Open;
+            }*/
+            
             
         }
 
@@ -64,7 +68,10 @@ namespace Lift
                 for (int j = 0; j < _liftsController.FloorCount; j++)
                 {
                     var rb = Controls.Find($"CurFloor{i}_{j}", true).First() as RadioButton;
-                    rb.Checked = false;
+                    rb.Invoke((MethodInvoker)delegate
+                    {
+                        rb.Checked = false;
+                    });
                 }
             }
 
