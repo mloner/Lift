@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Resources;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Lift.Models;
@@ -108,7 +109,21 @@ namespace Lift.Controllers
                 // /\
                 if (isCrisha(orderList, reqFloor, currentFloor))
                 {
-                    MessageBox.Show("кто написал тот пидор");
+                    var lists = SplitListByPeak(orderList);
+                    if (reqFloor < currentFloor)
+                    {
+                        lists[1].Add(reqFloor);
+                        lists[1].Sort();
+                        lists[1].Reverse();
+                    }
+                    else
+                    {
+                        lists[0].Add(reqFloor);
+                        lists[0].Sort();
+                    }
+
+                    lists[0].AddRange(lists[1]);
+                    return lists[0];
                 }
                 // /
                 else if (NextGreaterThenPrevious(orderList) && (direction == Direction.Up || direction == Direction.None))
@@ -133,6 +148,31 @@ namespace Lift.Controllers
             }
 
             return new List<int>();
+        }
+
+        public List<List<int>> SplitListByPeak(List<int> list)
+        {
+            var result = new List<List<int>>();
+            var lst1 = new List<int>();
+            var lst2 = new List<int>();
+            result.Add(lst1);
+            result.Add(lst2);
+
+            int i;
+            for (i = 0; i < list.Count - 1; i++)
+            {
+                if (list[i] < list[i + 1])
+                {
+                    lst1.Add(list[i]);
+                }
+            }
+
+            for (int j = i; j < list.Count; j++)
+            {
+                lst2.Add(list[i]);
+            }
+            
+            return result;
         }
 
         public bool NextGreaterThenPrevious(List<int> list)
