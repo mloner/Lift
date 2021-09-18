@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lift.Controllers;
+using Lift.Models;
 
 namespace Lift
 {
@@ -43,13 +44,19 @@ namespace Lift
                 
                 _liftsController.MoveLift(0, Direction.Up);
                 var cb = Controls.Find("CurFloor1_1", true).First() as RadioButton;
+                if(_liftsController.Elevators[2].State ==  State.Open)
+                    _liftsController.Elevators[2].State = State.Stay;
+                else
+                {
+                    _liftsController.Elevators[2].State = State.Open;
+                }
             }
             
         }
 
         private void RedrawSystemState()
         {
-            
+            //Дрочим одно
             for (int i = 0; i < _liftsController.LiftCount; i++)
             {
                 for (int j = 0; j < _liftsController.FloorCount; j++)
@@ -65,6 +72,24 @@ namespace Lift
                 var radioButton = Controls.Find($"CurFloor{count}_{lift.CurrentFloor}", true).First() as RadioButton;
                 count++;
                 radioButton.Checked = true;
+            }
+
+            count = 0;
+            //Дрочим другое
+            for (int i = 0; i < _liftsController.LiftCount; i++)
+            {
+                var rb = Controls.Find($"light{i}", true).First() as RadioButton;
+                rb.Checked = false;
+            }
+            
+            foreach (var lift in _liftsController.Elevators)
+            {
+                var radioButton = Controls.Find($"light{count}", true).First() as RadioButton;
+                count++;
+                if (lift.State == State.Open)
+                {
+                    radioButton.Checked = true;
+                }
             }
         }
         
@@ -209,7 +234,8 @@ namespace Lift
 
             var rbOpenDoorLight = new RadioButton()
             {
-                Enabled = false
+                Enabled = false,
+                Name = $"light{liftNum}"
             };
             layout.Controls.Add(rbOpenDoorLight);
 

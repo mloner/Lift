@@ -22,7 +22,7 @@ namespace Lift.Controllers
                 {
                     ActiveButtons = new List<int>(),
                     CurrentFloor = 0,
-                    DoorState = DoorState.Closed
+                    State = State.Stay
                 });
             }
 
@@ -54,5 +54,7 @@ namespace Lift.Controllers
                 //MessageBox.Show("Floors count is less then expected");
             }
         }
+        
+        
     }
 }

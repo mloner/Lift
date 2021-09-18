@@ -3,16 +3,17 @@ using Lift.Controllers;
 
 namespace Lift.Models
 {
-    public enum DoorState
+    public enum State
     {
-        Opened,
-        Closed
+        Open,
+        Stay,
+        Move
     }
     
     
     public class Elevator
     {
-        public DoorState DoorState { get; set; }
+        public State State { get; set; }
         public int CurrentFloor { get; set; }
         public List<int> ActiveButtons { get; set; }
 
