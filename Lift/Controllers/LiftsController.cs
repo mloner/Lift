@@ -11,11 +11,14 @@ namespace Lift.Controllers
         public int LiftCount { get; set; }
         public List<Elevator> Elevators { get; set; }
         public List<PressedButton> PressedButtons { get; set; }
+        
+        public List<PressedButton> CommandList { get; set; }
         public LiftsController(int liftCount, int floorCount)
         {
             LiftCount = liftCount;
             FloorCount = floorCount;
             Elevators = new List<Elevator>();
+            
             for (int i = 0; i < LiftCount; i++)
             {
                 Elevators.Add(new Elevator()
@@ -27,6 +30,7 @@ namespace Lift.Controllers
             }
 
             PressedButtons = new List<PressedButton>();
+            CommandList = new List<PressedButton>();
         }
         public void AddButtonLift(int liftNum, int floorNum)
         {
@@ -54,7 +58,10 @@ namespace Lift.Controllers
                 //MessageBox.Show("Floors count is less then expected");
             }
         }
-        
-        
+
+        public void MainCycle()
+        {
+            
+        }
     }
 }
