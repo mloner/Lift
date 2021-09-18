@@ -67,6 +67,7 @@ namespace Lift.Controllers
                 orderList.AddRange(tmpList);
                 return orderList;
             }
+            //одна задача
             else if(orderList.Count == 1)
             {
                 if (direction == Direction.Up)
@@ -150,6 +151,7 @@ namespace Lift.Controllers
                 
                 if (lift.OrderList.Count != 0)
                 {
+                    //MessageBox.Show(lift.OrderList.Count.ToString());
                     //мы приехали
                     if (lift.CurrentFloor == lift.OrderList.First())
                     {

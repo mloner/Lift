@@ -21,7 +21,7 @@ namespace Lift
         {
             InitializeComponent();
             
-            int floorCount = 5;
+            int floorCount = 8;
             int liftCount = 3;
             
             _liftsController = new LiftsController(liftCount, floorCount);
@@ -62,7 +62,9 @@ namespace Lift
 
         private void RedrawSystemState()
         {
-            //Дрочим одно
+            #region Floor buttons
+
+            //погасить фонарь кнокпи этажей лифтов
             for (int i = 0; i < _liftsController.LiftCount; i++)
             {
                 for (int j = 0; j < _liftsController.FloorCount; j++)
@@ -71,26 +73,34 @@ namespace Lift
                     rb.Invoke((MethodInvoker)delegate
                     {
                         rb.Checked = false;
+                       // rb.BackColor = new Color();
                     });
                 }
             }
 
+            //зажечь фонарь там, где лифт сечас
             var count = 0;
             foreach (var lift in _liftsController.Elevators)
             {
                 var radioButton = Controls.Find($"CurFloor{count}_{lift.CurrentFloor}", true).First() as RadioButton;
                 count++;
                 radioButton.Checked = true;
+              //  radioButton.BackColor = Color.MediumOrchid;
             }
 
+            #endregion
+
+            #region Open door lights
+
             count = 0;
-            //Дрочим другое
+            //погасить все фонари открытия двери
             for (int i = 0; i < _liftsController.LiftCount; i++)
             {
                 var rb = Controls.Find($"light{i}", true).First() as RadioButton;
                 rb.Checked = false;
             }
-            
+        
+            //зажечь фонарь открытия двери, если дверь в лифте открыта
             foreach (var lift in _liftsController.Elevators)
             {
                 var radioButton = Controls.Find($"light{count}", true).First() as RadioButton;
@@ -100,6 +110,25 @@ namespace Lift
                     radioButton.Checked = true;
                 }
             }
+
+            #endregion
+
+            #region Lift buttons
+
+            int liftCounter = 0;
+            //если кнопка горит и лифт туда приехал, оффнуть кнопку
+            foreach (var lift in _liftsController.Elevators)
+            {
+                if (lift.OrderList.Contains(lift.CurrentFloor))
+                {
+                    var btn = Controls.Find($"btnLift{liftCounter}_{lift.CurrentFloor}", true).First() as Button;
+                    btn.BackColor = new Color();
+                }
+
+                liftCounter++;
+            }
+
+            #endregion
         }
         
 
@@ -202,7 +231,7 @@ namespace Lift
             //lift buttons
             var liftLayout = new FlowLayoutPanel()
             {
-                FlowDirection = FlowDirection.TopDown
+                FlowDirection = FlowDirection.TopDown,
             };
             
             for (int i = 0; i < floorsCount; i++)
@@ -219,7 +248,7 @@ namespace Lift
                 
                 var rb = new RadioButton();
                 rb.Name = $"CurFloor{liftNum}_{i}";
-                rb.Enabled = false;
+               // rb.Enabled = false;
                 rbFlp.Controls.Add(rb);
                 layout.Controls.Add(rbFlp);
 
@@ -243,7 +272,7 @@ namespace Lift
 
             var rbOpenDoorLight = new RadioButton()
             {
-                Enabled = false,
+               // Enabled = false,
                 Name = $"light{liftNum}"
             };
             layout.Controls.Add(rbOpenDoorLight);
@@ -262,7 +291,7 @@ namespace Lift
             {
                 var nums = btnName.Substring("btnLift".Length).Split('_').Select(x => Convert.ToInt32(x)).ToList();
                 _liftsController.AddButtonLift(nums[0], nums[1]);
-                btn.BackColor = Color.Gray;
+                btn.BackColor = Color.LightCoral;
                 _liftsController.HandleButtonInLift(nums[0], nums[1]);
             }
             //UP button in a floor 
