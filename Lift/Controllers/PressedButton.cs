@@ -3,7 +3,8 @@
     public enum Direction
     {
         Up,
-        Down
+        Down,
+        None
     }
     public class PressedButton
     {

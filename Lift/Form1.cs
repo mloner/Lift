@@ -21,7 +21,7 @@ namespace Lift
         {
             InitializeComponent();
             
-            int floorCount = 8;
+            int floorCount = 9;
             int liftCount = 3;
             
             _liftsController = new LiftsController(liftCount, floorCount);
@@ -29,7 +29,7 @@ namespace Lift
             InitInterface(floorCount, liftCount);
 
             System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
-            myTimer.Interval = 1000;
+            myTimer.Interval = 1500;
 
             myTimer.Tick += HandleTicks;
             myTimer.Enabled = true;

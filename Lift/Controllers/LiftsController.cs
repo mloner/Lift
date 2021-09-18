@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
@@ -102,10 +103,72 @@ namespace Lift.Controllers
                     }
                 }
             }
+            else
+            {
+                // /\
+                if (orderList.First() > currentFloor && orderList.Last() < currentFloor)
+                {
+                    MessageBox.Show("хуй");
+                }
+                // /
+                else if (NextGreaterThenPrevious(orderList) && (direction == Direction.Up || direction == Direction.None))
+                {
+                    MessageBox.Show(string.Join(",", orderList.ToArray()));
+                    orderList.Add(reqFloor);
+                    orderList.Sort();
+                    MessageBox.Show(string.Join(",", orderList.ToArray()));
+                    return orderList;
+                }
+                // \
+                else if (NextLessThenPrevious(orderList) && (direction == Direction.Down || direction == Direction.None))
+                {
+                    MessageBox.Show(string.Join(",", orderList.ToArray()));
+                    orderList.Add(reqFloor);
+                    orderList.Sort();
+                    orderList.Reverse();
+                    MessageBox.Show(string.Join(",", orderList.ToArray()));
+                    return orderList;
+                }
+                
+            }
 
             return new List<int>();
         }
 
+        public bool NextGreaterThenPrevious(List<int> list)
+        {
+            for (int i = 0; i < list.Count - 1; i++)
+            {
+                if (list[i] < list[i + 1])
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        
+        public bool NextLessThenPrevious(List<int> list)
+        {
+            for (int i = 0; i < list.Count - 1; i++)
+            {
+                if (list[i] > list[i + 1])
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        
         public Direction GetRequestDirection(int currentFloorNum, int requiredFloorNum)
         {
             if (currentFloorNum > requiredFloorNum)
@@ -156,6 +219,7 @@ namespace Lift.Controllers
                     if (lift.CurrentFloor == lift.OrderList.First())
                     {
                         lift.State = State.Open;
+                        lift.Direction = Direction.None;
                         //снять задачу
                         lift.OrderList.Remove(lift.OrderList.First());
                         continue;
