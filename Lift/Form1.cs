@@ -29,7 +29,7 @@ namespace Lift
             InitInterface(floorCount, liftCount);
 
             System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
-            myTimer.Interval = 1500;
+            myTimer.Interval = 1000;
 
             myTimer.Tick += HandleTicks;
             myTimer.Enabled = true;

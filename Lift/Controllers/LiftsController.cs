@@ -106,9 +106,9 @@ namespace Lift.Controllers
             else
             {
                 // /\
-                if (orderList.First() > currentFloor && orderList.Last() < currentFloor)
+                if (isCrisha(orderList, reqFloor, currentFloor))
                 {
-                    MessageBox.Show("хуй");
+                    MessageBox.Show("кто написал тот пидор");
                 }
                 // /
                 else if (NextGreaterThenPrevious(orderList) && (direction == Direction.Up || direction == Direction.None))
@@ -167,6 +167,26 @@ namespace Lift.Controllers
             }
 
             return true;
+        }
+
+        public bool isCrisha(List<int> list, int newFloor, int currentFloor)
+        {
+            bool found = true;
+            foreach (var x in list)
+            {
+                if (currentFloor > x)
+                {
+                    found = false;
+                    break;
+                }
+            }
+
+            if (newFloor < currentFloor && found)
+            {
+                return true;
+            }
+
+            return false;
         }
         
         public Direction GetRequestDirection(int currentFloorNum, int requiredFloorNum)
