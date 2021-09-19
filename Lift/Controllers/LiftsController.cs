@@ -117,6 +117,7 @@ namespace Lift.Controllers
                 var isCrishab = isCrisha(orderList, reqFloor, currentFloor);
                 if (isCrisha(orderList) || isCrishab)
                 {
+                    Console.WriteLine("Крыша" + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                     var lists = new List<List<int>>();
                     lists.Add(new List<int>());//добавили лист0
                     lists.Add(new List<int>());//доьбавили лист1
@@ -155,6 +156,7 @@ namespace Lift.Controllers
                 var isGalkab = isGalka(orderList, reqFloor, currentFloor);
                 if (isGalka(orderList) || isGalkab)
                 {
+                    Console.WriteLine("Галка" + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                     var lists = new List<List<int>>();
                     lists.Add(new List<int>());//добавили лист0
                     lists.Add(new List<int>());//доьбавили лист1
@@ -276,17 +278,8 @@ namespace Lift.Controllers
             //крыша с currentflow and newflor
             if (newFloor != null && currentFloor != null)
             {
-                bool found = true;
-                foreach (var x in list)
-                {
-                    if (currentFloor > x)
-                    {
-                        found = false;
-                        break;
-                    }
-                }
 
-                if (newFloor < currentFloor && found)
+                if (newFloor < currentFloor && list.Where(x => x > currentFloor).Count() > 0)
                 {
                     return true;
                 }
