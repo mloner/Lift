@@ -185,6 +185,7 @@ namespace Lift
                     upButton.Text = "Up";
                     upButton.Name = $"btnFloorUp{currentFloor}";
                     upButton.AutoSize = true;
+                    
                     gbFp.Controls.Add(upButton);
                     upButton.Click += new EventHandler(this.btn_Clicked);
                 }
@@ -305,7 +306,7 @@ namespace Lift
                     Direction = Direction.Up,
                     FloorNum = num
                 });
-                btn.BackColor = Color.Yellow;
+                btn.BackColor = Color.Aqua;
             }
             //DOWN button in a floor
             else if (btnName.StartsWith("btnFloorDown"))
