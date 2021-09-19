@@ -50,8 +50,8 @@ namespace Lift
             _liftsController.MainCycle();
             
             
-            /*_liftsController.MoveLift(0, Direction.Up);
-            var cb = Controls.Find("CurFloor1_1", true).First() as RadioButton;
+            _liftsController.isCrisha(new List<int>(){6,3}, 2, 5);
+            /*var cb = Controls.Find("CurFloor1_1", true).First() as RadioButton;
             if(_liftsController.Elevators[2].State ==  State.Open)
                 _liftsController.Elevators[2].State = State.Stay;
             else

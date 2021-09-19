@@ -63,10 +63,12 @@ namespace Lift.Controllers
 
         public List<int> AddRequestToLiftQueue(List<int> orderList, int currentFloor, Direction direction, int reqFloor)
         {
+            //нет задач
             var tmpList = new List<int>(){reqFloor};
             if (orderList.Count == 0)
             {
                 orderList.AddRange(tmpList);
+                Console.WriteLine("Одна задача " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                 return orderList;
             }
             //одна задача
@@ -78,12 +80,14 @@ namespace Lift.Controllers
                     {
                         //добавляем перед
                         tmpList.AddRange(orderList);
+                        Console.WriteLine("Две задачи: " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                         return tmpList;
                     }
                     else
                     {
                         //в конец
                         orderList.AddRange(tmpList);
+                        Console.WriteLine("Две задачи: " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                         return orderList;
                     }
                 }
@@ -94,12 +98,14 @@ namespace Lift.Controllers
                     {
                         //добавляем перед
                         tmpList.AddRange(orderList);
+                        Console.WriteLine("Две задачи: " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                         return tmpList;
                     }
                     else
                     {
                         //в конец
                         orderList.AddRange(tmpList);
+                        Console.WriteLine("Две задачи: " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                         return orderList;
                     }
                 }
@@ -188,7 +194,7 @@ namespace Lift.Controllers
                     //MessageBox.Show(string.Join(",", orderList.ToArray()));
                     orderList.Add(reqFloor);
                     orderList.Sort();
-                    Console.WriteLine("Палка вверх " + string.Join(",", orderList.ToArray()));
+                    Console.WriteLine("Палка вверх " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                     return orderList;
                 }
                 // \
@@ -198,7 +204,7 @@ namespace Lift.Controllers
                     orderList.Add(reqFloor);
                     orderList.Sort();
                     orderList.Reverse();
-                    Console.WriteLine("Палка вниз " + string.Join(",", orderList.ToArray()));
+                    Console.WriteLine("Палка вниз " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                     return orderList;
                 }
                 
