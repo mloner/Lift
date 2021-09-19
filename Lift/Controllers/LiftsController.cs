@@ -145,6 +145,43 @@ namespace Lift.Controllers
                     Console.WriteLine("Крыша " + string.Join(",", lists[0].Select(x => x + 1).ToArray()));
                     return lists[0];
                 }
+                // \/
+                var isGalkab = isGalka(orderList, reqFloor, currentFloor);
+                if (isGalka(orderList) || isGalkab)
+                {
+                    var lists = new List<List<int>>();
+                    lists.Add(new List<int>());//добавили лист0
+                    lists.Add(new List<int>());//доьбавили лист1
+                    Console.WriteLine("До добавления в галку " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
+                    if (isGalkab)
+                    {
+                        lists[0] = orderList;
+                        lists[1] = new List<int>();
+                    }
+                    else
+                    {
+                        lists = SplitListByPeak(orderList);
+                    }
+                    Console.WriteLine("Лист 0: " + string.Join(",", lists[0].Select(x => x + 1).ToArray()));
+                    Console.WriteLine("Лист 1: " + string.Join(",", lists[1].Select(x => x + 1).ToArray()));
+                    if (reqFloor > currentFloor)
+                    {
+                        lists[1].Add(reqFloor);
+                        lists[1].Sort();
+                        //Console.WriteLine("Лист 1: " + string.Join(",", lists[1].Select(x => x + 1).ToArray()));
+                    }
+                    else
+                    {
+                        lists[0].Add(reqFloor);
+                        lists[0].Sort();
+                        lists[0].Reverse();
+                        //Console.WriteLine("Лист 0: " + string.Join(",", lists[0].Select(x => x + 1).ToArray()));
+                    }
+                    
+                    lists[0].AddRange(lists[1]);
+                    Console.WriteLine("Галка " + string.Join(",", lists[0].Select(x => x + 1).ToArray()));
+                    return lists[0];
+                }
                 // /
                 else if (NextGreaterThenPrevious(orderList) && (direction == Direction.Up || direction == Direction.None))
                 {
@@ -265,7 +302,43 @@ namespace Lift.Controllers
 
         }
 
+        public bool isGalka(List<int> list, int? newFloor = null, int? currentFloor = null)
+        {
+            //крыша с currentflow and newflor
+            if (newFloor != null && currentFloor != null)
+            {
+                bool found = true;
+                foreach (var x in list)
+                {
+                    if (currentFloor < x)
+                    {
+                        found = false;
+                        break;
+                    }
+                }
 
+                if (newFloor > currentFloor && found)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            else
+            {
+                var ind = list.IndexOf(list.Min());
+                if (ind != 0 && ind != list.Count - 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+        }
+        
         public Direction GetRequestDirection(int currentFloorNum, int requiredFloorNum)
         {
             if (currentFloorNum > requiredFloorNum)
