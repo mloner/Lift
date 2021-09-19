@@ -112,6 +112,8 @@ namespace Lift.Controllers
                 if (isCrisha(orderList) || isCrishab)
                 {
                     var lists = new List<List<int>>();
+                    lists.Add(new List<int>());//добавили лист0
+                    lists.Add(new List<int>());//доьбавили лист1
                     Console.WriteLine("До добавления в крышу " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                     if (isCrishab)
                     {
