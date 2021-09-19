@@ -203,7 +203,7 @@ namespace Lift.Controllers
                 }
                 
             }
-
+            Console.WriteLine("Краш " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
             return new List<int>();
         }
 
