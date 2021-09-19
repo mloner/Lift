@@ -34,7 +34,7 @@ namespace Lift
             myTimer.Tick += HandleTicks;
             myTimer.Enabled = true;
 
-            _liftsController.SplitListByPeak(new List<int>() {5, 6,2});
+            //_liftsController.SplitListByPeak(new List<int>() {5, 6, 2});
 
             // var threadParameters = new System.Threading.ThreadStart(HandleTicks);
             // var thread2 = new System.Threading.Thread(threadParameters);

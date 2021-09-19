@@ -108,11 +108,20 @@ namespace Lift.Controllers
             else
             {
                 // /\
-                if (isCrisha(orderList) || isCrisha(orderList, reqFloor, currentFloor))
+                var isCrishab = isCrisha(orderList, reqFloor, currentFloor);
+                if (isCrisha(orderList) || isCrishab)
                 {
-                    
+                    var lists = new List<List<int>>();
                     Console.WriteLine("До добавления в крышу " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
-                    var lists = SplitListByPeak(orderList);
+                    if (isCrishab)
+                    {
+                        lists[0] = orderList;
+                        lists[1] = new List<int>();
+                    }
+                    else
+                    {
+                        lists = SplitListByPeak(orderList);
+                    }
                     Console.WriteLine("Лист 0: " + string.Join(",", lists[0].Select(x => x + 1).ToArray()));
                     Console.WriteLine("Лист 1: " + string.Join(",", lists[1].Select(x => x + 1).ToArray()));
                     if (reqFloor < currentFloor)
@@ -167,20 +176,15 @@ namespace Lift.Controllers
             result.Add(lst1);
             result.Add(lst2);
 
-            int i;
-            for (i = 0; i < list.Count - 1; i++)
+            int i = -1;
+            do
             {
-                if (list[i] < list[i + 1])
-                {
-                    lst1.Add(list[i]);
-                }
-            }
-
-            if (i != list.Count-1)
-            {
-                i -= 1;
-            }
-            for (int j = i; j < list.Count; j++)
+                i++;
+                lst1.Add(list[i]);
+            } while (list[i] < list[i + 1]);
+            
+            
+            for (int j = i + 1; j < list.Count; j++)
             {
                 lst2.Add(list[j]);
             }
