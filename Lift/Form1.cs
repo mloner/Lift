@@ -21,7 +21,7 @@ namespace Lift
         {
             InitializeComponent();
             
-            int floorCount = 9;
+            int floorCount = 7;
             int liftCount = 3;
             
             _liftsController = new LiftsController(liftCount, floorCount);

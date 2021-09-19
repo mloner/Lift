@@ -104,11 +104,13 @@ namespace Lift.Controllers
                     }
                 }
             }
+            //много задач
             else
             {
                 // /\
-                if (isCrisha(orderList, reqFloor, currentFloor))
+                if (isCrisha(orderList) || isCrisha(orderList, reqFloor, currentFloor))
                 {
+                    MessageBox.Show("Крыша" + string.Join(",", orderList.ToArray()));
                     var lists = SplitListByPeak(orderList);
                     if (reqFloor < currentFloor)
                     {
@@ -128,20 +130,20 @@ namespace Lift.Controllers
                 // /
                 else if (NextGreaterThenPrevious(orderList) && (direction == Direction.Up || direction == Direction.None))
                 {
-                    MessageBox.Show(string.Join(",", orderList.ToArray()));
+                   // MessageBox.Show(string.Join(",", orderList.ToArray()));
                     orderList.Add(reqFloor);
                     orderList.Sort();
-                    MessageBox.Show(string.Join(",", orderList.ToArray()));
+                   // MessageBox.Show(string.Join(",", orderList.ToArray()));
                     return orderList;
                 }
                 // \
                 else if (NextLessThenPrevious(orderList) && (direction == Direction.Down || direction == Direction.None))
                 {
-                    MessageBox.Show(string.Join(",", orderList.ToArray()));
+                    //MessageBox.Show(string.Join(",", orderList.ToArray()));
                     orderList.Add(reqFloor);
                     orderList.Sort();
                     orderList.Reverse();
-                    MessageBox.Show(string.Join(",", orderList.ToArray()));
+                   // MessageBox.Show(string.Join(",", orderList.ToArray()));
                     return orderList;
                 }
                 
@@ -209,26 +211,44 @@ namespace Lift.Controllers
             return true;
         }
 
-        public bool isCrisha(List<int> list, int newFloor, int currentFloor)
+        public bool isCrisha(List<int> list, int? newFloor = null, int? currentFloor = null)
         {
-            bool found = true;
-            foreach (var x in list)
+            //крыша с currentflow and newflor
+            if (newFloor != null && currentFloor != null)
             {
-                if (currentFloor > x)
+                bool found = true;
+                foreach (var x in list)
                 {
-                    found = false;
-                    break;
+                    if (currentFloor > x)
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+
+                if (newFloor < currentFloor && found)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            else
+            {
+                var ind = list.IndexOf(list.Max());
+                if (ind != 0 && ind != list.Count - 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
 
-            if (newFloor < currentFloor && found)
-            {
-                return true;
-            }
-
-            return false;
         }
-        
+
+
         public Direction GetRequestDirection(int currentFloorNum, int requiredFloorNum)
         {
             if (currentFloorNum > requiredFloorNum)
