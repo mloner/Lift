@@ -110,30 +110,37 @@ namespace Lift.Controllers
                 // /\
                 if (isCrisha(orderList) || isCrisha(orderList, reqFloor, currentFloor))
                 {
-                    MessageBox.Show("Крыша" + string.Join(",", orderList.ToArray()));
+                    
+                    Console.WriteLine("До добавления в крышу " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                     var lists = SplitListByPeak(orderList);
+                    Console.WriteLine("Лист 0: " + string.Join(",", lists[0].Select(x => x + 1).ToArray()));
+                    Console.WriteLine("Лист 1: " + string.Join(",", lists[1].Select(x => x + 1).ToArray()));
                     if (reqFloor < currentFloor)
                     {
                         lists[1].Add(reqFloor);
+                        
                         lists[1].Sort();
                         lists[1].Reverse();
+                        //Console.WriteLine("Лист 1: " + string.Join(",", lists[1].Select(x => x + 1).ToArray()));
                     }
                     else
                     {
                         lists[0].Add(reqFloor);
                         lists[0].Sort();
+                        //Console.WriteLine("Лист 0: " + string.Join(",", lists[0].Select(x => x + 1).ToArray()));
                     }
-
+                    
                     lists[0].AddRange(lists[1]);
+                    Console.WriteLine("Крыша " + string.Join(",", lists[0].Select(x => x + 1).ToArray()));
                     return lists[0];
                 }
                 // /
                 else if (NextGreaterThenPrevious(orderList) && (direction == Direction.Up || direction == Direction.None))
                 {
-                   // MessageBox.Show(string.Join(",", orderList.ToArray()));
+                    //MessageBox.Show(string.Join(",", orderList.ToArray()));
                     orderList.Add(reqFloor);
                     orderList.Sort();
-                   // MessageBox.Show(string.Join(",", orderList.ToArray()));
+                    Console.WriteLine("Палка вверх " + string.Join(",", orderList.ToArray()));
                     return orderList;
                 }
                 // \
@@ -143,7 +150,7 @@ namespace Lift.Controllers
                     orderList.Add(reqFloor);
                     orderList.Sort();
                     orderList.Reverse();
-                   // MessageBox.Show(string.Join(",", orderList.ToArray()));
+                    Console.WriteLine("Палка вниз " + string.Join(",", orderList.ToArray()));
                     return orderList;
                 }
                 
@@ -169,9 +176,13 @@ namespace Lift.Controllers
                 }
             }
 
+            if (i != list.Count-1)
+            {
+                i -= 1;
+            }
             for (int j = i; j < list.Count; j++)
             {
-                lst2.Add(list[i]);
+                lst2.Add(list[j]);
             }
             
             return result;
@@ -291,6 +302,10 @@ namespace Lift.Controllers
                     lift.State = State.Stay;
                     continue;
                 }
+                if (lift.OrderList.Count == 0)
+                {
+                    lift.Direction = Direction.None;
+                }
                 
                 if (lift.OrderList.Count != 0)
                 {
@@ -299,9 +314,11 @@ namespace Lift.Controllers
                     if (lift.CurrentFloor == lift.OrderList.First())
                     {
                         lift.State = State.Open;
-                        lift.Direction = Direction.None;
+                        
                         //снять задачу
+                        Console.WriteLine("Этаж удален "+ (lift.OrderList.First()+1));
                         lift.OrderList.Remove(lift.OrderList.First());
+                        
                         continue;
                     }
                     else if (lift.CurrentFloor < lift.OrderList.First())

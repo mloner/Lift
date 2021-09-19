@@ -5,7 +5,7 @@
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <ProjectGuid>{889A489C-024A-46D1-9218-230334FC7790}</ProjectGuid>
-        <OutputType>WinExe</OutputType>
+        <OutputType>Exe</OutputType>
         <RootNamespace>Lift</RootNamespace>
         <AssemblyName>Lift</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
