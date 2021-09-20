@@ -131,6 +131,7 @@ namespace Lift.Controllers
                             lists[0] = orderList;
                             lists[1] = new List<int>();
                         }
+                        //убывание
                         else
                         {
                             lists[0] = new List<int>();
@@ -173,8 +174,18 @@ namespace Lift.Controllers
                     Console.WriteLine("До добавления в галку " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                     if (isGalkab)
                     {
-                        lists[0] = orderList;
-                        lists[1] = new List<int>();
+                        //убывание
+                        if (NextLessThenPrevious(orderList))
+                        {
+                            lists[0] = orderList;
+                            lists[1] = new List<int>();
+                        }
+                        //возрастание
+                        else
+                        {
+                            lists[0] = new List<int>();
+                            lists[1] = orderList;
+                        }
                     }
                     else
                     {
