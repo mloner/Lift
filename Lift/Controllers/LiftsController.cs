@@ -45,8 +45,6 @@ namespace Lift.Controllers
             }
         }
         
-        
-
         public bool HandlePressedButtonInLift(int liftNum, int floorNum)
         {
             var lift = this.Elevators[liftNum];
@@ -74,7 +72,9 @@ namespace Lift.Controllers
                 var min = lift.ActiveButtons.Count == 0 ? 0 : lift.ActiveButtons.Min();
                 var max = lift.ActiveButtons.Count == 0 ? 0 : lift.ActiveButtons.Max();
                 
+                //(2^4) + 2
                 
+                //two None
                 if ((lift.Direction == Direction.None) && direction == Direction.Down)
                 {
                     lift.Distance = Math.Abs(curFloor - floorNum);
@@ -85,41 +85,75 @@ namespace Lift.Controllers
                     lift.Distance = Math.Abs(curFloor - floorNum);
                 }
                 
+                
+                
+                //13 - 14
                 else if ((lift.Direction == Direction.Down) && direction == Direction.Down && curFloor > floorNum)
                 {
                     lift.Distance = curFloor - floorNum;
                 }
-                
-                else if ((lift.Direction == Direction.Down) && direction == Direction.Up && curFloor > floorNum)
+
+                //15
+                else if ((lift.Direction == Direction.Down) && direction == Direction.Up && curFloor > floorNum && min < floorNum)
                 {
                     lift.Distance = (curFloor - min) + (floorNum - min);
                 }
-
-                else if ((lift.Direction == Direction.Down) && direction == Direction.Down && curFloor < floorNum)
+                
+                //16
+                else if ((lift.Direction == Direction.Down) && direction == Direction.Up && curFloor > floorNum && min > floorNum)
                 {
-                    lift.Distance = (curFloor - min) + (max - min)+(max - floorNum);
+                    lift.Distance = (curFloor - floorNum);
                 }
                 
+                //9
+                else if ((lift.Direction == Direction.Down) && direction == Direction.Down && curFloor < floorNum && max > floorNum)
+                {
+                    lift.Distance = (curFloor - min) + (max - min) + (max - floorNum);
+                }
+                
+                //10
+                else if ((lift.Direction == Direction.Down) && direction == Direction.Down && curFloor < floorNum && max < floorNum)
+                {
+                    lift.Distance = (curFloor - min) + (floorNum - min);
+                }
+                
+                //11-12
                 else if ((lift.Direction == Direction.Down ) && direction == Direction.Up && curFloor < floorNum)
                 {
                     lift.Distance = (curFloor - min) + (floorNum - min);
                 }
                 
+                //7-8
                 else if ((lift.Direction == Direction.Up) &&  direction == Direction.Down && curFloor > floorNum)
                 {
                     lift.Distance = (max - curFloor) + (max - floorNum);
                 }
                 
-                else if ((lift.Direction == Direction.Up) && direction == Direction.Up && curFloor > floorNum)
+                //5
+                else if ((lift.Direction == Direction.Up) && direction == Direction.Up && curFloor > floorNum && min < floorNum)
                 {
-                    lift.Distance = (max - curFloor) + (max - min)+ (floorNum - min);
+                    lift.Distance = (max - curFloor) + (max - min) + (floorNum - min);
                 }
                 
-                else if ((lift.Direction == Direction.Up) && direction == Direction.Down && curFloor < floorNum)
+                //6
+                else if ((lift.Direction == Direction.Up) && direction == Direction.Up && curFloor > floorNum && min > floorNum)
                 {
                     lift.Distance = (max - curFloor) + (max - floorNum);
                 }
                 
+                //3
+                else if ((lift.Direction == Direction.Up) && direction == Direction.Down && curFloor < floorNum && max > floorNum)
+                {
+                    lift.Distance = (max - curFloor) + (max - floorNum);
+                }
+                
+                //4
+                else if ((lift.Direction == Direction.Up) && direction == Direction.Down && curFloor < floorNum && max < floorNum)
+                {
+                    lift.Distance = (floorNum - curFloor);
+                }
+                
+                //1-2
                 else if ((lift.Direction == Direction.Up) && direction == Direction.Up && curFloor < floorNum)
                 {
                     lift.Distance = (floorNum - curFloor);

@@ -132,6 +132,15 @@ namespace Lift
             }
             
             #endregion
+
+            #region Floor buttons
+
+            foreach (var lift in _liftsController.Elevators)
+            {
+                
+            }
+
+            #endregion
         }
         
 
