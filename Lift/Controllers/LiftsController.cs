@@ -64,6 +64,9 @@ namespace Lift.Controllers
 
         public List<int> AddRequestToLiftQueue(List<int> orderList, int currentFloor, Direction direction, int reqFloor)
         {
+            Console.WriteLine("\nДолбаеб нажал кнопку: " +
+                              "\nТекущий лист: " + string.Join(",", orderList.Select(x => x + 1).ToArray()) +
+                              "\nТекущий этаж: " + (currentFloor+1) + "\nНажатый этаж: " + (reqFloor + 1));
             //нет задач
             var tmpList = new List<int>(){reqFloor};
             if (orderList.Count == 0)
@@ -301,7 +304,7 @@ namespace Lift.Controllers
             if (newFloor != null && currentFloor != null)
             {
 
-                if (newFloor < currentFloor && list.Where(x => x > currentFloor).Count() > 0)
+                if (newFloor < currentFloor && list.Where(x => x >= currentFloor).Count() > 0)
                 {
                     return true;
                 }
@@ -328,17 +331,7 @@ namespace Lift.Controllers
             //крыша с currentflow and newflor
             if (newFloor != null && currentFloor != null)
             {
-                bool found = true;
-                foreach (var x in list)
-                {
-                    if (currentFloor < x)
-                    {
-                        found = false;
-                        break;
-                    }
-                }
-
-                if (newFloor > currentFloor && found)
+                if (newFloor > currentFloor && list.Where(x => x <= currentFloor).Count() > 0)
                 {
                     return true;
                 }
