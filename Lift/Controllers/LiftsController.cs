@@ -113,6 +113,7 @@ namespace Lift.Controllers
             //много задач
             else
             {
+                
                 // /\
                 var isCrishab = isCrisha(orderList, reqFloor, currentFloor);
                 if (isCrisha(orderList) || isCrishab)
@@ -124,8 +125,17 @@ namespace Lift.Controllers
                     Console.WriteLine("До добавления в крышу " + string.Join(",", orderList.Select(x => x + 1).ToArray()));
                     if (isCrishab)
                     {
-                        lists[0] = orderList;
-                        lists[1] = new List<int>();
+                        //возрастание
+                        if (NextGreaterThenPrevious(orderList))
+                        {
+                            lists[0] = orderList;
+                            lists[1] = new List<int>();
+                        }
+                        else
+                        {
+                            lists[0] = new List<int>();
+                            lists[1] = orderList;
+                        }
                     }
                     else
                     {
