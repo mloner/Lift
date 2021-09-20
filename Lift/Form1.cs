@@ -309,23 +309,35 @@ namespace Lift
             else if (btnName.StartsWith("btnFloorUp"))
             {
                 var num = Convert.ToInt32(btnName.Substring("btnFloorUp".Length));
-                _liftsController.PressedButtons.Add(new PressedButton()
+                
+                var opSuccess = _liftsController.HandlePressedButtonOnFloor(num, Direction.Up);
+                if (opSuccess)
                 {
-                    Direction = Direction.Up,
-                    FloorNum = num
-                });
-                btn.BackColor = Color.Aqua;
+                    _liftsController.PressedButtons.Add(new PressedButton()
+                    {
+                        Direction = Direction.Up,
+                        FloorNum = num
+                    });
+                    btn.BackColor = Color.Aqua;
+                    btn.Enabled = false;
+                }
+                
             }
             //DOWN button in a floor
             else if (btnName.StartsWith("btnFloorDown"))
             {
                 var num = Convert.ToInt32(btnName.Substring("btnFloorDown".Length));
-                _liftsController.PressedButtons.Add(new PressedButton()
+                var opSuccess = _liftsController.HandlePressedButtonOnFloor(num, Direction.Down);
+                if (opSuccess)
                 {
-                    Direction = Direction.Down,
-                    FloorNum = num
-                });
-                btn.BackColor = Color.Yellow;
+                    _liftsController.PressedButtons.Add(new PressedButton()
+                    {
+                        Direction = Direction.Down,
+                        FloorNum = num
+                    });
+                    btn.BackColor = Color.Yellow;
+                    btn.Enabled = false;
+                }
             }
 
             //MessageBox.Show(btn.Name);

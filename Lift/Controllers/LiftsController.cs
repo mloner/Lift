@@ -44,6 +44,8 @@ namespace Lift.Controllers
                 Elevators[liftNum].ActiveButtons.Add(floorNum);
             }
         }
+        
+        
 
         public bool HandlePressedButtonInLift(int liftNum, int floorNum)
         {
@@ -59,6 +61,57 @@ namespace Lift.Controllers
             }
 
             lift.OrderList = AddRequestToLiftQueue(lift.OrderList, lift.CurrentFloor, lift.Direction, floorNum);
+            return true;
+        }
+
+        public bool HandlePressedButtonOnFloor(int floorNum, Direction direction)
+        {
+            foreach (var lift in Elevators)
+            {
+                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Down && lift.CurrentFloor > floorNum)
+                {
+                    lift.Distance = lift.CurrentFloor - floorNum;
+                }
+
+                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Up && lift.CurrentFloor > floorNum)
+                {
+                    lift.Distance = (lift.CurrentFloor - lift.OrderList.Min()) + (floorNum - lift.OrderList.Min());
+                }
+                
+                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Down && lift.CurrentFloor < floorNum)
+                {
+                    lift.Distance = (lift.CurrentFloor - lift.OrderList.Min()) + (lift.OrderList.Max() - lift.OrderList.Min())+(lift.OrderList.Max() - floorNum);
+                }
+                
+                if ((lift.Direction == Direction.Down  || lift.Direction == Direction.None) && direction == Direction.Up && lift.CurrentFloor < floorNum)
+                {
+                    lift.Distance = (lift.CurrentFloor - lift.OrderList.Min()) + (floorNum - lift.OrderList.Min());
+                }
+                
+                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) &&  direction == Direction.Down && lift.CurrentFloor > floorNum)
+                {
+                    lift.Distance = (lift.OrderList.Max() - lift.CurrentFloor) + (lift.OrderList.Max() - floorNum);
+                }
+                
+                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Up && lift.CurrentFloor > floorNum)
+                {
+                    lift.Distance = (lift.OrderList.Max() - lift.CurrentFloor) + (lift.OrderList.Max() - lift.OrderList.Min())+ (floorNum - lift.OrderList.Min());
+                }
+                
+                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Down && lift.CurrentFloor < floorNum)
+                {
+                    lift.Distance = (lift.OrderList.Max() - lift.CurrentFloor) + (lift.OrderList.Max() - floorNum);
+                }
+                
+                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Up && lift.CurrentFloor < floorNum)
+                {
+                    lift.Distance = (floorNum - lift.CurrentFloor);
+                }
+                
+            }
+
+            var elevator = Elevators.OrderBy(x => x.Distance).First();
+            elevator.OrderList = AddRequestToLiftQueue(elevator.OrderList, elevator.CurrentFloor, elevator.Direction, floorNum);
             return true;
         }
 
