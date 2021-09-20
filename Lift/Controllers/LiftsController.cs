@@ -66,53 +66,68 @@ namespace Lift.Controllers
 
         public bool HandlePressedButtonOnFloor(int floorNum, Direction direction)
         {
-            
-            
+
+            int elevNum = 0;
             foreach (var lift in Elevators)
             {
                 var curFloor = lift.CurrentFloor;
                 var min = lift.ActiveButtons.Count == 0 ? 0 : lift.ActiveButtons.Min();
                 var max = lift.ActiveButtons.Count == 0 ? 0 : lift.ActiveButtons.Max();
                 
-                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Down && curFloor > floorNum)
+                
+                if ((lift.Direction == Direction.None) && direction == Direction.Down)
+                {
+                    lift.Distance = Math.Abs(curFloor - floorNum);
+                }
+                
+                else if ((lift.Direction == Direction.None) && direction == Direction.Up)
+                {
+                    lift.Distance = Math.Abs(curFloor - floorNum);
+                }
+                
+                else if ((lift.Direction == Direction.Down) && direction == Direction.Down && curFloor > floorNum)
                 {
                     lift.Distance = curFloor - floorNum;
                 }
-
-                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Up && curFloor > floorNum)
+                
+                else if ((lift.Direction == Direction.Down) && direction == Direction.Up && curFloor > floorNum)
                 {
                     lift.Distance = (curFloor - min) + (floorNum - min);
                 }
-                
-                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Down && curFloor < floorNum)
+
+                else if ((lift.Direction == Direction.Down) && direction == Direction.Down && curFloor < floorNum)
                 {
                     lift.Distance = (curFloor - min) + (max - min)+(max - floorNum);
                 }
                 
-                if ((lift.Direction == Direction.Down  || lift.Direction == Direction.None) && direction == Direction.Up && curFloor < floorNum)
+                else if ((lift.Direction == Direction.Down ) && direction == Direction.Up && curFloor < floorNum)
                 {
                     lift.Distance = (curFloor - min) + (floorNum - min);
                 }
                 
-                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) &&  direction == Direction.Down && curFloor > floorNum)
+                else if ((lift.Direction == Direction.Up) &&  direction == Direction.Down && curFloor > floorNum)
                 {
                     lift.Distance = (max - curFloor) + (max - floorNum);
                 }
                 
-                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Up && curFloor > floorNum)
+                else if ((lift.Direction == Direction.Up) && direction == Direction.Up && curFloor > floorNum)
                 {
                     lift.Distance = (max - curFloor) + (max - min)+ (floorNum - min);
                 }
                 
-                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Down && curFloor < floorNum)
+                else if ((lift.Direction == Direction.Up) && direction == Direction.Down && curFloor < floorNum)
                 {
                     lift.Distance = (max - curFloor) + (max - floorNum);
                 }
                 
-                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Up && curFloor < floorNum)
+                else if ((lift.Direction == Direction.Up) && direction == Direction.Up && curFloor < floorNum)
                 {
                     lift.Distance = (floorNum - curFloor);
                 }
+
+                elevNum++;
+                
+                Console.WriteLine($"Elevator {elevNum} distance: {lift.Distance}");
                 
             }
 
