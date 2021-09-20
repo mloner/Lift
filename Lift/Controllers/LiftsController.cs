@@ -66,46 +66,52 @@ namespace Lift.Controllers
 
         public bool HandlePressedButtonOnFloor(int floorNum, Direction direction)
         {
+            
+            
             foreach (var lift in Elevators)
             {
-                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Down && lift.CurrentFloor > floorNum)
+                var curFloor = lift.CurrentFloor;
+                var min = lift.ActiveButtons.Count == 0 ? 0 : lift.ActiveButtons.Min();
+                var max = lift.ActiveButtons.Count == 0 ? 0 : lift.ActiveButtons.Max();
+                
+                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Down && curFloor > floorNum)
                 {
-                    lift.Distance = lift.CurrentFloor - floorNum;
+                    lift.Distance = curFloor - floorNum;
                 }
 
-                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Up && lift.CurrentFloor > floorNum)
+                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Up && curFloor > floorNum)
                 {
-                    lift.Distance = (lift.CurrentFloor - lift.OrderList.Min()) + (floorNum - lift.OrderList.Min());
+                    lift.Distance = (curFloor - min) + (floorNum - min);
                 }
                 
-                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Down && lift.CurrentFloor < floorNum)
+                if ((lift.Direction == Direction.Down || lift.Direction == Direction.None) && direction == Direction.Down && curFloor < floorNum)
                 {
-                    lift.Distance = (lift.CurrentFloor - lift.OrderList.Min()) + (lift.OrderList.Max() - lift.OrderList.Min())+(lift.OrderList.Max() - floorNum);
+                    lift.Distance = (curFloor - min) + (max - min)+(max - floorNum);
                 }
                 
-                if ((lift.Direction == Direction.Down  || lift.Direction == Direction.None) && direction == Direction.Up && lift.CurrentFloor < floorNum)
+                if ((lift.Direction == Direction.Down  || lift.Direction == Direction.None) && direction == Direction.Up && curFloor < floorNum)
                 {
-                    lift.Distance = (lift.CurrentFloor - lift.OrderList.Min()) + (floorNum - lift.OrderList.Min());
+                    lift.Distance = (curFloor - min) + (floorNum - min);
                 }
                 
-                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) &&  direction == Direction.Down && lift.CurrentFloor > floorNum)
+                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) &&  direction == Direction.Down && curFloor > floorNum)
                 {
-                    lift.Distance = (lift.OrderList.Max() - lift.CurrentFloor) + (lift.OrderList.Max() - floorNum);
+                    lift.Distance = (max - curFloor) + (max - floorNum);
                 }
                 
-                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Up && lift.CurrentFloor > floorNum)
+                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Up && curFloor > floorNum)
                 {
-                    lift.Distance = (lift.OrderList.Max() - lift.CurrentFloor) + (lift.OrderList.Max() - lift.OrderList.Min())+ (floorNum - lift.OrderList.Min());
+                    lift.Distance = (max - curFloor) + (max - min)+ (floorNum - min);
                 }
                 
-                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Down && lift.CurrentFloor < floorNum)
+                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Down && curFloor < floorNum)
                 {
-                    lift.Distance = (lift.OrderList.Max() - lift.CurrentFloor) + (lift.OrderList.Max() - floorNum);
+                    lift.Distance = (max - curFloor) + (max - floorNum);
                 }
                 
-                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Up && lift.CurrentFloor < floorNum)
+                if ((lift.Direction == Direction.Up || lift.Direction == Direction.None) && direction == Direction.Up && curFloor < floorNum)
                 {
-                    lift.Distance = (floorNum - lift.CurrentFloor);
+                    lift.Distance = (floorNum - curFloor);
                 }
                 
             }
