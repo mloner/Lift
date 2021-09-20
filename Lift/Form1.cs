@@ -129,7 +129,7 @@ namespace Lift
 
                 liftCounter++;
             }
-
+            
             #endregion
         }
         
@@ -293,9 +293,15 @@ namespace Lift
             if (btnName.StartsWith("btnLift"))
             {
                 var nums = btnName.Substring("btnLift".Length).Split('_').Select(x => Convert.ToInt32(x)).ToList();
-                _liftsController.AddButtonLift(nums[0], nums[1]);
-                btn.BackColor = Color.LightCoral;
-                _liftsController.HandleButtonInLift(nums[0], nums[1]);
+                var liftNum = nums[0];
+                var buttonNum = nums[1];
+                
+                var opSuccess = _liftsController.HandlePressedButtonInLift(liftNum, buttonNum);
+                if (opSuccess)
+                {
+                    _liftsController.TurnOnButtonInLift(liftNum, buttonNum);
+                    btn.BackColor = Color.LightCoral;
+                }
             }
             //UP button in a floor 
             else if (btnName.StartsWith("btnFloorUp"))

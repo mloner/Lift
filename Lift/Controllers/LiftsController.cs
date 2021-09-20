@@ -37,7 +37,7 @@ namespace Lift.Controllers
         }
         
         //нужно чтобы знать, какие кнопки нажаты в лифте
-        public void AddButtonLift(int liftNum, int floorNum)
+        public void TurnOnButtonInLift(int liftNum, int floorNum)
         {
             if (!Elevators[liftNum].ActiveButtons.Contains(floorNum))
             {
@@ -45,7 +45,7 @@ namespace Lift.Controllers
             }
         }
 
-        public void HandleButtonInLift(int liftNum, int floorNum)
+        public bool HandlePressedButtonInLift(int liftNum, int floorNum)
         {
             var lift = this.Elevators[liftNum];
 
@@ -55,10 +55,11 @@ namespace Lift.Controllers
             // нельзя ехать на свой этаж
             if (floorNum == lift.CurrentFloor)
             {
-                return;
+                return false;
             }
 
             lift.OrderList = AddRequestToLiftQueue(lift.OrderList, lift.CurrentFloor, lift.Direction, floorNum);
+            return true;
         }
 
         public List<int> AddRequestToLiftQueue(List<int> orderList, int currentFloor, Direction direction, int reqFloor)
