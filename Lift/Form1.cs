@@ -125,6 +125,7 @@ namespace Lift
                 {
                     var btn = Controls.Find($"btnLift{liftCounter}_{lift.CurrentFloor}", true).First() as Button;
                     btn.BackColor = new Color();
+                    btn.Enabled = true;
                 }
 
                 liftCounter++;
@@ -301,6 +302,7 @@ namespace Lift
                 {
                     _liftsController.TurnOnButtonInLift(liftNum, buttonNum);
                     btn.BackColor = Color.LightCoral;
+                    btn.Enabled = false;
                 }
             }
             //UP button in a floor 
