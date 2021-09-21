@@ -25,6 +25,7 @@ namespace Lift.Controllers
             {
                 Elevators.Add(new Elevator()
                 {
+                    Id = i,
                     ActiveButtons = new List<int>(),
                     CurrentFloor = 0,
                     State = State.Stay,
@@ -62,7 +63,7 @@ namespace Lift.Controllers
             return true;
         }
 
-        public bool HandlePressedButtonOnFloor(int floorNum, Direction direction)
+        public int HandlePressedButtonOnFloor(int floorNum, Direction direction)
         {
 
             int elevNum = 0;
@@ -167,7 +168,7 @@ namespace Lift.Controllers
 
             var elevator = Elevators.OrderBy(x => x.Distance).First();
             elevator.OrderList = AddRequestToLiftQueue(elevator.OrderList, elevator.CurrentFloor, elevator.Direction, floorNum);
-            return true;
+            return elevator.Id;
         }
 
         public List<int> AddRequestToLiftQueue(List<int> orderList, int currentFloor, Direction direction, int reqFloor)

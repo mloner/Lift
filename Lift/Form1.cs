@@ -134,10 +134,19 @@ namespace Lift
             #endregion
 
             #region Floor buttons
-
+            
             foreach (var lift in _liftsController.Elevators)
             {
-                
+                var qwe = _liftsController.PressedButtons
+                    .Where(x => x.FloorNum == lift.CurrentFloor && x.LiftNum == lift.Id);
+                if (lift.ActiveButtons.Contains(lift.CurrentFloor)
+                    && qwe.Count() > 0)
+                {
+                    //погасить кнопку
+                    var btn = Controls.Find($"btnFloor{qwe.First().Direction.ToString()}{liftCounter}", true).First() as Button;
+                    btn.BackColor = new Color();
+                    btn.Enabled = true;
+                }    
             }
 
             #endregion
@@ -317,15 +326,16 @@ namespace Lift
             //UP button in a floor 
             else if (btnName.StartsWith("btnFloorUp"))
             {
-                var num = Convert.ToInt32(btnName.Substring("btnFloorUp".Length));
+                var floorNum = Convert.ToInt32(btnName.Substring("btnFloorUp".Length));
                 
-                var opSuccess = _liftsController.HandlePressedButtonOnFloor(num, Direction.Up);
-                if (opSuccess)
+                var elevNum = _liftsController.HandlePressedButtonOnFloor(floorNum, Direction.Up);
+                if (elevNum != -1)
                 {
                     _liftsController.PressedButtons.Add(new PressedButton()
                     {
                         Direction = Direction.Up,
-                        FloorNum = num
+                        FloorNum = floorNum,
+                        LiftNum = elevNum
                     });
                     btn.BackColor = Color.Aqua;
                     btn.Enabled = false;
@@ -336,13 +346,14 @@ namespace Lift
             else if (btnName.StartsWith("btnFloorDown"))
             {
                 var num = Convert.ToInt32(btnName.Substring("btnFloorDown".Length));
-                var opSuccess = _liftsController.HandlePressedButtonOnFloor(num, Direction.Down);
-                if (opSuccess)
+                var elevNum = _liftsController.HandlePressedButtonOnFloor(num, Direction.Down);
+                if (elevNum != -1)
                 {
                     _liftsController.PressedButtons.Add(new PressedButton()
                     {
                         Direction = Direction.Down,
-                        FloorNum = num
+                        FloorNum = num,
+                        LiftNum = elevNum
                     });
                     btn.BackColor = Color.Yellow;
                     btn.Enabled = false;

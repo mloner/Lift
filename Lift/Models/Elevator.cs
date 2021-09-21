@@ -13,6 +13,7 @@ namespace Lift.Models
     
     public class Elevator
     {
+        public int Id { get; set; }
         public State State { get; set; }
         public int CurrentFloor { get; set; }
         public List<int> ActiveButtons { get; set; }

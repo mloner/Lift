@@ -10,5 +10,6 @@
     {
         public Direction Direction { get; set; }
         public int FloorNum { get; set; }
+        public int LiftNum { get; set; }
     }
 }
