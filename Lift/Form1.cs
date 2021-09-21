@@ -137,10 +137,8 @@ namespace Lift
             
             foreach (var lift in _liftsController.Elevators)
             {
-                var qwe = _liftsController.PressedButtons
-                    .Where(x => x.FloorNum == lift.CurrentFloor && x.LiftNum == lift.Id);
-                if (lift.ActiveButtons.Contains(lift.CurrentFloor)
-                    && qwe.Count() > 0)
+                var qwe = _liftsController.PressedButtons.Where(x => x.FloorNum == lift.CurrentFloor && x.LiftNum == lift.Id);
+                if (qwe.Count() > 0)
                 {
                     //погасить кнопку
                     var btn = Controls.Find($"btnFloor{qwe.First().Direction.ToString()}{liftCounter}", true).First() as Button;
