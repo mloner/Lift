@@ -141,7 +141,7 @@ namespace Lift
                 if (qwe.Count() > 0)
                 {
                     //погасить кнопку
-                    var btn = Controls.Find($"btnFloor{qwe.First().Direction.ToString()}{liftCounter}", true).First() as Button;
+                    var btn = Controls.Find($"btnFloor{qwe.First().Direction.ToString()}{qwe.First().FloorNum}", true).First() as Button;
                     btn.BackColor = new Color();
                     btn.Enabled = true;
                 }    
